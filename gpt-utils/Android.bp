@@ -16,7 +16,7 @@
 
 
 cc_library {
-    name: "libgptutils.oneplus8",
+    name: "libgptutils.I003D",
     vendor: true,
     recovery_available: true,
     shared_libs: [

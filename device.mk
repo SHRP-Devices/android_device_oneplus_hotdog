@@ -1,5 +1,5 @@
 
-LOCAL_PATH := device/oneplus/instantnoodle
+LOCAL_PATH := device/asus/I003D
 
 # define hardware platform
 PRODUCT_PLATFORM := kona
