@@ -17,13 +17,20 @@
 # Release name
 PRODUCT_RELEASE_NAME := I003D
 
-$(call inherit-product, $(SRC_TARGET_DIR)/product/core_minimal.mk)
+$(call inherit-product, $(SRC_TARGET_DIR)/product/base.mk)
 
 # Inherit from our custom product configuration
 $(call inherit-product, vendor/omni/config/common.mk)
 
 # Inherit from hardware-specific part of the product configuration
 $(call inherit-product, device/asus/$(PRODUCT_RELEASE_NAME)/device.mk)
+
+# Overrides
+PRODUCT_BUILD_PROP_OVERRIDES := BUILD_PRODUCT=ZS661KS
+PRODUCT_SYSTEM_DEVICE := ASUS_I003_1
+PRODUCT_SYSTEM_NAME := WW_I003D
+PRODUCT_VENDOR_DEVICE := $(PRODUCT_SYSTEM_DEVICE)
+PRODUCT_VENDOR_NAME := $(PRODUCT_SYSTEM_NAME)
 
 ## Device identifier. This must come after all inclusions
 PRODUCT_DEVICE := I003D
@@ -32,15 +39,5 @@ PRODUCT_BRAND := asus
 PRODUCT_MODEL := ASUS_I003D
 PRODUCT_MANUFACTURER := asus
 
-PRODUCT_BUILD_PROP_OVERRIDES += \
-    PRODUCT_NAME=WW_I003D \
-    BUILD_PRODUCT=ZS661KS \
-    TARGET_DEVICE=ASUS_I003_1
-
+# Stock recovery keys
 PRODUCT_EXTRA_RECOVERY_KEYS += device/$(PRODUCT_BRAND)/$(PRODUCT_DEVICE)/security/$(PRODUCT_BRAND)
-
-# Verity
-PRODUCT_SUPPORTS_BOOT_SIGNER := true
-PRODUCT_SUPPORTS_VERITY := true
-PRODUCT_SUPPORTS_VERITY_FEC := true
-PRODUCT_VERITY_SIGNING_KEY := build/target/product/security/verity
