@@ -53,7 +53,7 @@ if [ -z "$osver" ]; then
 		log_info "$DEFAULTPROP updated. $osver_default"
 	else
 		log_error "No Original OS version found. Setting default value..."
-		osver="10"
+		osver="16.1.0"
 		setprop ro.build.version.release "$osver"
 		log_info "OS version set. ro.build.version.release=$osver"
 		log_info "Updating $DEFAULTPROP with default OS version..."
@@ -81,7 +81,7 @@ if [ -z "$patchlevel" ]; then
 		finish
 	else
 		log_error "No Original Security Patch Level found. Setting default value..."
-		patchlevel="2020-07-01"
+		patchlevel="2099-12-31"
 		setprop ro.build.version.security_patch "$patchlevel"
 		log_info "Security Patch Level set. ro.build.version.security_patch=$patchlevel"
 		log_info "Updating $DEFAULTPROP with default Security Patch Level..."

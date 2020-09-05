@@ -4,9 +4,16 @@ on early-fs
 on fs
     install_keyring
 
+on fs && property:ro.crypto.state=encrypted && property:ro.crypto.type=file
+    start time_daemon
+
+on property:sys.usb.config=mtp,adb && property:ro.crypto.state=encrypted && property:ro.crypto.type=file
+    restart time_daemon
+
 on property:vendor.sys.listeners.registered=true
     start servicemanager
     start gatekeeper-1-0-qti
+    restart time_daemon
 
 on property:twrp.all.users.decrypted=true
     setprop crypto.ready 0
@@ -39,5 +46,11 @@ service keystore /sbin/keystore /tmp/misc/keystore
 service servicemanager /sbin/servicemanager
     user root
     group root readproc
+    disabled
+    seclabel u:r:recovery:s0
+
+service time_daemon /sbin/time_daemon
+    user root
+    group root
     disabled
     seclabel u:r:recovery:s0

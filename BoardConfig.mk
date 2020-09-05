@@ -23,21 +23,26 @@
 # *not* include it on all devices, so it is safe even with hardware-specific
 # components.
 
+# OEM Info
+BOARD_VENDOR := asus
+
 # Default path for device tree
-LOCAL_PATH := device/asus/$(TARGET_DEVICE)
+LOCAL_PATH := device/$(BOARD_VENDOR)/$(TARGET_DEVICE)
 
 # Architecture
 TARGET_ARCH := arm64
-TARGET_ARCH_VARIANT := armv8-2a
+TARGET_ARCH_VARIANT := armv8-a
 TARGET_CPU_ABI := arm64-v8a
 TARGET_CPU_ABI2 :=
-TARGET_CPU_VARIANT := cortex-a75
+TARGET_CPU_VARIANT := generic
+TARGET_CPU_VARIANT_RUNTIME := kryo385
 
 TARGET_2ND_ARCH := arm
-TARGET_2ND_ARCH_VARIANT := armv8-2a
+TARGET_2ND_ARCH_VARIANT := armv8-a
 TARGET_2ND_CPU_ABI := armeabi-v7a
 TARGET_2ND_CPU_ABI2 := armeabi
-TARGET_2ND_CPU_VARIANT := cortex-a75
+TARGET_2ND_CPU_VARIANT := generic
+TARGET_2ND_CPU_VARIANT_RUNTIME := kryo385
 
 ENABLE_CPUSETS := true
 ENABLE_SCHEDBOOST := true
@@ -50,8 +55,9 @@ TARGET_USES_UEFI := true
 BUILD_BROKEN_DUP_RULES := true
 
 # Kernel
-BOARD_KERNEL_CMDLINE := console=ttyMSM0,115200n8 earlycon=msm_geni_serial,0xa90000 androidboot.hardware=qcom androidboot.console=ttyMSM0 androidboot.memcg=1 lpm_levels.sleep_disabled=1 video=vfb:640x400,bpp=32,memsize=3072000 msm_rtb.filter=0x237 service_locator.enable=1 androidboot.usbcontroller=a600000.dwc3 swiotlb=2048 loop.max_part=7 cgroup.memory=nokmem,nosocket
-#BOARD_KERNEL_CMDLINE += reboot=panic_warm
+BOARD_KERNEL_CMDLINE := console=ttyMSM0,115200n8 earlycon=msm_geni_serial,0xa90000 androidboot.console=ttyMSM0 androidboot.memcg=1 lpm_levels.sleep_disabled=1 video=vfb:640x400,bpp=32,memsize=3072000 msm_rtb.filter=0x237 service_locator.enable=1 androidboot.usbcontroller=a600000.dwc3 swiotlb=2048 loop.max_part=7 cgroup.memory=nokmem,nosocket
+BOARD_KERNEL_CMDLINE += androidboot.hardware=qcom
+BOARD_KERNEL_CMDLINE += reboot=panic_warm
 BOARD_KERNEL_IMAGE_NAME := Image
 BOARD_KERNEL_PAGESIZE := 4096
 BOARD_BOOT_HEADER_VERSION := 2
@@ -81,6 +87,7 @@ BOARD_MKBOOTIMG_ARGS += --recovery_dtbo $(BOARD_PREBUILT_DTBOIMAGE)
 # Platform
 TARGET_BOARD_PLATFORM := $(TARGET_BOOTLOADER_BOARD_NAME)
 TARGET_BOARD_PLATFORM_GPU := qcom-adreno650
+TARGET_USES_HARDWARE_QCOM_BOOTCTRL := true
 QCOM_BOARD_PLATFORMS += $(TARGET_BOARD_PLATFORM)
 
 # Partitions
@@ -102,8 +109,6 @@ BOARD_ODMIMAGE_PARTITION_SIZE := 974848
 #BOARD_ODMIMAGE_FILE_SYSTEM_TYPE := ext4
 
 #super
-#PRODUCT_USE_DYNAMIC_PARTITIONS := true
-#PRODUCT_BUILD_SUPER_PARTITION := true
 BOARD_SUPER_PARTITION_SIZE := 12884901888
 BOARD_SUPER_PARTITION_GROUPS := qti_dynamic_partitions
 BOARD_QTI_DYNAMIC_PARTITIONS_SIZE := 5572767744
@@ -115,7 +120,6 @@ BOARD_QTI_DYNAMIC_PARTITIONS_PARTITION_LIST := \
 
 TARGET_NO_KERNEL := false
 TARGET_NO_RECOVERY := false
-#BOARD_USES_RECOVERY_AS_BOOT := true
 BOARD_BUILD_SYSTEM_ROOT_IMAGE := true
 
 # Partitions (listed in the file) to be wiped under recovery.
@@ -144,7 +148,7 @@ TW_INPUT_BLACKLIST := "hbtp_vm"
 #TW_MAX_BRIGHTNESS := 1023
 #TW_DEFAULT_BRIGHTNESS := 420
 TW_THEME := portrait_hdpi
-TARGET_RECOVERY_DEVICE_MODULES += android.hardware.boot@1.0 libashmemd_client ashmemd_aidl_interface-cpp
+TARGET_RECOVERY_DEVICE_MODULES += bootctrl.$(TARGET_BOARD_PLATFORM) libashmemd_client ashmemd_aidl_interface-cpp
 TW_RECOVERY_ADDITIONAL_RELINK_FILES += $(TARGET_OUT_SHARED_LIBRARIES)/libashmemd_client.so $(TARGET_OUT_SHARED_LIBRARIES)/ashmemd_aidl_interface-cpp.so
 TARGET_USE_CUSTOM_LUN_FILE_PATH := /config/usb_gadget/g1/functions/mass_storage.0/lun.%d/file
 TARGET_RECOVERY_PIXEL_FORMAT := BGRA_8888
@@ -170,7 +174,10 @@ AB_OTA_PARTITIONS += \
 # vendor and odm and we also dont want to AB update them
 TARGET_ENFORCE_AB_OTA_PARTITION_LIST := true
 
-# Enable chain partition for system.
+# A/B
+BOARD_AVB_ENABLE := true
+BOARD_AVB_MAKE_VBMETA_IMAGE_ARGS += --set_hashtree_disabled_flag
+BOARD_AVB_MAKE_VBMETA_IMAGE_ARGS += --flags 2
 BOARD_AVB_VBMETA_SYSTEM := system
 BOARD_AVB_VBMETA_SYSTEM_KEY_PATH := external/avb/test/data/testkey_rsa2048.pem
 BOARD_AVB_VBMETA_SYSTEM_ALGORITHM := SHA256_RSA2048
@@ -178,8 +185,8 @@ BOARD_AVB_VBMETA_SYSTEM_ROLLBACK_INDEX := $(PLATFORM_SECURITY_PATCH_TIMESTAMP)
 BOARD_AVB_VBMETA_SYSTEM_ROLLBACK_INDEX_LOCATION := 1
 
 # Encryption
-PLATFORM_SECURITY_PATCH := 2020-07-01
-VENDOR_SECURITY_PATCH := 2020-07-01
+PLATFORM_SECURITY_PATCH := 2099-12-31
+VENDOR_SECURITY_PATCH := 2099-12-31
 TW_INCLUDE_CRYPTO := true
 TW_INCLUDE_CRYPTO_FBE := true
 TW_INCLUDE_FBE_METADATA_DECRYPT := true
@@ -194,5 +201,5 @@ TW_HAS_EDL_MODE := true
 TWRP_INCLUDE_LOGCAT := true
 TARGET_USES_LOGD := true
 TW_NO_USB_STORAGE := true
-PLATFORM_VERSION := 10
+PLATFORM_VERSION := 16.1.0
 #TW_OVERRIDE_SYSTEM_PROPS := "ro.build.version.security_patch;ro.vendor.build.security_patch;ro.build.version.release"

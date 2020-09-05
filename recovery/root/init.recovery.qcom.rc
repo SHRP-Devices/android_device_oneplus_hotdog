@@ -25,51 +25,24 @@
 # ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #
 
-import /init.asus.user.rc
 import /init.recovery.qcom_decrypt.rc
 
 on init
     start boot-1-0
-    start time_daemon
 
 on fs
     wait /dev/block/platform/soc/${ro.boot.bootdevice}
     symlink /dev/block/platform/soc/${ro.boot.bootdevice} /dev/block/bootdevice
 
-    # this is for OnePlus 7 Pro 5g stock rom flashing
-    symlink /dev/block/bootdevice/by-name/mdm_oem_stanvbk /dev/block/bootdevice/by-name/mdm_oem_stanvbk_a
-    symlink /dev/block/bootdevice/by-name/mdm_oem_stanvbk /dev/block/bootdevice/by-name/mdm_oem_stanvbk_b
-    symlink /dev/block/bootdevice/by-name/spunvm /dev/block/bootdevice/by-name/spunvm_a
-    symlink /dev/block/bootdevice/by-name/spunvm /dev/block/bootdevice/by-name/spunvm_b
+    # Load Tuxera exFAT module
+    insmod /vendor/lib/modules/texfat.ko
 
 on boot
     setprop sys.usb.config adb
     write /proc/touchpanel/gesture_enable 1
     write /sys/devices/platform/soc/c440000.qcom,spmi/spmi-0/spmi0-02/c440000.qcom,spmi:qcom,pmi8998@2:qcom,qpnp-smb2/power_supply/usb/otg_switch 1
 
-    chmod 0777 /sbin/patchfakepartitions-service.sh
-    start patchfakepartitions-service
-
-on property:sys.usb.config=mtp,adb
-    restart time_daemon
-
-on property:vendor.sys.listeners.registered=true
-    restart time_daemon
-
 service boot-1-0 /sbin/android.hardware.boot@1.0-service
-    user root
-    group root
-    disabled
-    seclabel u:r:recovery:s0
-
-service patchfakepartitions-service /sbin/patchfakepartitions-service.sh
-    user root
-    group root
-    disabled
-    oneshot
-    seclabel u:r:recovery:s0
-
-service time_daemon /sbin/time_daemon
     user root
     group root
     disabled
