@@ -15,7 +15,7 @@
 #
 
 # Release name
-PRODUCT_RELEASE_NAME := I003D
+PRODUCT_RELEASE_NAME := sm8250
 
 $(call inherit-product, $(SRC_TARGET_DIR)/product/base.mk)
 
@@ -25,12 +25,6 @@ $(call inherit-product, vendor/omni/config/common.mk)
 # Inherit from hardware-specific part of the product configuration
 $(call inherit-product, device/asus/$(PRODUCT_RELEASE_NAME)/device.mk)
 
-# System & Vendor Properties
-PRODUCT_SYSTEM_DEVICE := ASUS_I003_1
-PRODUCT_SYSTEM_NAME := WW_$(PRODUCT_RELEASE_NAME)
-PRODUCT_VENDOR_DEVICE := $(PRODUCT_SYSTEM_DEVICE)
-PRODUCT_VENDOR_NAME := $(PRODUCT_SYSTEM_NAME)
-
 ## Device identifier. This must come after all inclusions
 PRODUCT_DEVICE := $(PRODUCT_RELEASE_NAME)
 PRODUCT_NAME := omni_$(PRODUCT_DEVICE)
@@ -38,11 +32,3 @@ PRODUCT_BRAND := asus
 PRODUCT_MODEL := ASUS_$(PRODUCT_DEVICE)
 PRODUCT_MANUFACTURER := asus
 
-# Overrides
-PRODUCT_BUILD_PROP_OVERRIDES += \
-   BUILD_PRODUCT=ZS661KS \
-   PRODUCT_DEVICE=$(PRODUCT_SYSTEM_DEVICE) \
-   PRODUCT_NAME=$(PRODUCT_SYSTEM_NAME)
-
-# Stock recovery keys
-PRODUCT_EXTRA_RECOVERY_KEYS += device/$(PRODUCT_BRAND)/$(PRODUCT_DEVICE)/security/$(PRODUCT_BRAND)

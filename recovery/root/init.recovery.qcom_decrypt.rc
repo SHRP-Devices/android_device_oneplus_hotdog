@@ -20,13 +20,13 @@ on property:init.svc.sbinqseecomd=running && property:vendor.sys.listeners.regis
     start sbinhwservicemanager
 
 on property:init.svc.sbinhwservicemanager=running && property:hwservicemanager.ready=true
-	start sbinkeymaster-4-0-qti
+    start sbinkeymaster-4-0-qti
 
 on property:ro.crypto.type=block && property:ro.crypto.fs_crypto_blkdev=*
     setprop crypto.ready 0
     stop sbinqseecomd
     stop sbinhwservicemanager
-	stop sbinkeymaster-4-0-qti
+    stop sbinkeymaster-4-0-qti
 
 service prepdecrypt /sbin/prepdecrypt.sh
     user root

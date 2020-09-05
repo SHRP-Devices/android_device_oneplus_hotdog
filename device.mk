@@ -1,5 +1,5 @@
 
-LOCAL_PATH := device/asus/I003D
+LOCAL_PATH := device/asus/sm8250
 
 # define hardware platform
 PRODUCT_PLATFORM := kona
