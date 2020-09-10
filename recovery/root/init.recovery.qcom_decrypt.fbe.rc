@@ -7,13 +7,9 @@ on fs
 on property:ro.crypto.state=encrypted && property:ro.crypto.type=file
     start time_daemon
 
-on property:sys.usb.config=mtp,adb && property:ro.crypto.state=encrypted && property:ro.crypto.type=file
-    restart time_daemon
-
 on property:vendor.sys.listeners.registered=true
     start servicemanager
     start gatekeeper-1-0-qti
-    restart time_daemon
 
 on property:twrp.all.users.decrypted=true
     setprop crypto.ready 0
