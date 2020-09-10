@@ -55,7 +55,7 @@ TARGET_USES_UEFI := true
 # Kernel
 BOARD_KERNEL_CMDLINE := console=ttyMSM0,115200n8 earlycon=msm_geni_serial,0xa90000 androidboot.console=ttyMSM0 androidboot.memcg=1 lpm_levels.sleep_disabled=1 video=vfb:640x400,bpp=32,memsize=3072000 msm_rtb.filter=0x237 service_locator.enable=1 androidboot.usbcontroller=a600000.dwc3 swiotlb=2048 loop.max_part=7 cgroup.memory=nokmem,nosocket
 BOARD_KERNEL_CMDLINE += androidboot.hardware=qcom
-#BOARD_KERNEL_CMDLINE += reboot=panic_warm
+BOARD_KERNEL_CMDLINE += reboot=panic_warm
 BOARD_KERNEL_IMAGE_NAME := Image
 BOARD_KERNEL_PAGESIZE := 4096
 BOARD_BOOT_HEADER_VERSION := 2
@@ -66,6 +66,7 @@ BOARD_KERNEL_SECOND_OFFSET := 0x00f00000
 BOARD_RAMDISK_OFFSET       := 0x01000000
 BOARD_DTB_OFFSET           := 0x01f00000
 TARGET_KERNEL_ARCH := arm64
+TARGET_NO_KERNEL := false
 TARGET_PREBUILT_DTB := $(LOCAL_PATH)/prebuilt/dtb.img
 TARGET_PREBUILT_KERNEL := $(LOCAL_PATH)/prebuilt/Image.gz
 BOARD_PREBUILT_DTBOIMAGE := $(LOCAL_PATH)/prebuilt/dtbo.img
@@ -87,7 +88,7 @@ TARGET_BOARD_PLATFORM_GPU := qcom-adreno650
 TARGET_USES_HARDWARE_QCOM_BOOTCTRL := true
 QCOM_BOARD_PLATFORMS += $(TARGET_BOARD_PLATFORM)
 
-# Partitions
+# Partition Info
 BOARD_FLASH_BLOCK_SIZE := 262144
 BOARD_USES_PRODUCTIMAGE := true
 
@@ -107,17 +108,15 @@ TARGET_USERIMAGES_USE_F2FS := true
 #BOARD_ODMIMAGE_FILE_SYSTEM_TYPE := ext4
 #BOARD_DTBOIMG_PARTITION_SIZE := 25165824
 
-#super
+BOARD_BUILD_SYSTEM_ROOT_IMAGE := false
+
+# Dynamic/Logical Partitions
 BOARD_SUPER_PARTITION_SIZE := 15032385536
 BOARD_SUPER_PARTITION_GROUPS := qti_dynamic_partitions
-BOARD_QTI_DYNAMIC_PARTITIONS_SIZE := 7511998464
+BOARD_QTI_DYNAMIC_PARTITIONS_SIZE := 6441926656
 BOARD_QTI_DYNAMIC_PARTITIONS_PARTITION_LIST := \
     system \
     product
-
-TARGET_NO_KERNEL := false
-TARGET_NO_RECOVERY := false
-BOARD_BUILD_SYSTEM_ROOT_IMAGE := true
 
 # Partitions (listed in the file) to be wiped under recovery.
 TARGET_RECOVERY_WIPE := $(LOCAL_PATH)/recovery.wipe
@@ -132,47 +131,16 @@ TARGET_COPY_OUT_VENDOR := vendor
 # Recovery
 BOARD_HAS_LARGE_FILESYSTEM := true
 BOARD_HAS_NO_SELECT_BUTTON := true
-
-# TWRP specific build flags
-#TWRP_EVENT_LOGGING := true
-BOARD_HAS_NO_REAL_SDCARD := true
-RECOVERY_SDCARD_ON_DATA := true
-TARGET_RECOVERY_QCOM_RTC_FIX := true
-TW_BRIGHTNESS_PATH := "/sys/class/backlight/panel0-backlight/brightness"
-TW_EXCLUDE_DEFAULT_USB_INIT := true
-TW_EXTRA_LANGUAGES := true
-TW_INCLUDE_NTFS_3G := true
-AB_OTA_UPDATER := true
-TW_INPUT_BLACKLIST := "hbtp_vm"
-#TW_MAX_BRIGHTNESS := 1023
-TW_DEFAULT_BRIGHTNESS := 420
-TW_THEME := portrait_hdpi
-TARGET_USE_CUSTOM_LUN_FILE_PATH := /config/usb_gadget/g1/functions/mass_storage.0/lun.%d/file
-TARGET_RECOVERY_PIXEL_FORMAT := BGRA_8888
-TW_NO_EXFAT_FUSE := true
-TW_NO_BIND_SYSTEM := true
-#TW_NO_SCREEN_BLANK := true
-#TW_USE_TOOLBOX := true
+BOARD_SUPPRESS_SECURE_ERASE := true
+TARGET_NO_RECOVERY := false
+TARGET_RECOVERY_DEVICE_MODULES += android.hidl.base@1.0 ashmemd_aidl_interface-cpp bootctrl.$(TARGET_BOARD_PLATFORM).recovery
+TARGET_RECOVERY_DEVICE_MODULES += libashmemd_client libcap libion libpcrecpp libxml2
+TARGET_RECOVERY_DEVICE_MODULES += tzdata
 
 # Use mke2fs to create ext4 images
 TARGET_USES_MKE2FS := true
 
-# A/B updater updatable partitions list. Keep in sync with the partition list
-# with "_a" and "_b" variants in the device. Note that the vendor can add more
-# more partitions to this list for the bootloader and radio.
-AB_OTA_PARTITIONS += \
-    boot \
-    system \
-    vendor \
-    vbmeta \
-    dtbo 
-
-# tell update_engine to not change dynamic partition table during updates
-# needed since our qti_dynamic_partitions does not include
-# vendor and odm and we also dont want to AB update them
-TARGET_ENFORCE_AB_OTA_PARTITION_LIST := true
-
-# A/B
+# AVB
 #BOARD_AVB_ENABLE := true
 #BOARD_AVB_MAKE_VBMETA_IMAGE_ARGS += --set_hashtree_disabled_flag
 #BOARD_AVB_MAKE_VBMETA_IMAGE_ARGS += --flags 2
@@ -183,6 +151,7 @@ BOARD_AVB_VBMETA_SYSTEM_ROLLBACK_INDEX := $(PLATFORM_SECURITY_PATCH_TIMESTAMP)
 BOARD_AVB_VBMETA_SYSTEM_ROLLBACK_INDEX_LOCATION := 1
 
 # Encryption
+PLATFORM_VERSION := 16.1.0
 PLATFORM_SECURITY_PATCH := 2099-12-31
 VENDOR_SECURITY_PATCH := 2099-12-31
 TW_INCLUDE_CRYPTO := true
@@ -190,16 +159,31 @@ TW_INCLUDE_CRYPTO_FBE := true
 TW_INCLUDE_FBE_METADATA_DECRYPT := true
 BOARD_USES_METADATA_PARTITION := true
 
-# Extras
-BOARD_SUPPRESS_SECURE_ERASE := true
-TW_HAPTICS_TSPDRV := true
-USE_RECOVERY_INSTALLER := true
+# TWRP specific build flags
+TARGET_RECOVERY_QCOM_RTC_FIX := true
+TARGET_RECOVERY_PIXEL_FORMAT := BGRA_8888
+TARGET_USE_CUSTOM_LUN_FILE_PATH := /config/usb_gadget/g1/functions/mass_storage.0/lun.%d/file
+TW_THEME := portrait_hdpi
+TW_BRIGHTNESS_PATH := "/sys/class/backlight/panel0-backlight/brightness"
+TW_DEFAULT_BRIGHTNESS := 420
+TW_EXCLUDE_DEFAULT_USB_INIT := true
 TW_EXCLUDE_TWRPAPP := true
+TW_EXTRA_LANGUAGES := true
+TW_HAPTICS_TSPDRV := true
 TW_HAS_EDL_MODE := true
-TWRP_INCLUDE_LOGCAT := true
-TARGET_USES_LOGD := true
-TW_NO_USB_STORAGE := true
-PLATFORM_VERSION := 16.1.0
+TW_INCLUDE_NTFS_3G := true
+TW_INPUT_BLACKLIST := "hbtp_vm"
+TW_NO_BIND_SYSTEM := true
+TW_NO_EXFAT_FUSE := true
 TW_OVERRIDE_SYSTEM_PROPS := \
     "ro.build.product;ro.build.fingerprint=ro.system.build.fingerprint;ro.product.device=ro.product.system.device;ro.product.model=ro.product.system.model;ro.product.name=ro.product.system.name"
+TW_RECOVERY_ADDITIONAL_RELINK_BINARY_FILES += $(TARGET_OUT)/usr/share/zoneinfo/tzdata
+TW_RECOVERY_ADDITIONAL_RELINK_LIBRARY_FILES += $(TARGET_OUT_SHARED_LIBRARIES)/android.hidl.base@1.0.so $(TARGET_OUT_SHARED_LIBRARIES)/libashmemd_client.so $(TARGET_OUT_SHARED_LIBRARIES)/ashmemd_aidl_interface-cpp.so
+TW_RECOVERY_ADDITIONAL_RELINK_LIBRARY_FILES += $(TARGET_OUT_SHARED_LIBRARIES)/libcap.so $(TARGET_OUT_SHARED_LIBRARIES)/libion.so $(TARGET_OUT_SHARED_LIBRARIES)/libpcrecpp.so $(TARGET_OUT_SHARED_LIBRARIES)/libxml2.so
+#TW_NO_SCREEN_BLANK := true
+#TW_MAX_BRIGHTNESS := 1023
 
+# TWRP Debug Flags
+TARGET_USES_LOGD := true
+#TWRP_EVENT_LOGGING := true
+TWRP_INCLUDE_LOGCAT := true

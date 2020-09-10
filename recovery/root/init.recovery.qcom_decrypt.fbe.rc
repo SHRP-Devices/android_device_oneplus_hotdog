@@ -4,7 +4,7 @@ on early-fs
 on fs
     install_keyring
 
-on fs && property:ro.crypto.state=encrypted && property:ro.crypto.type=file
+on property:ro.crypto.state=encrypted && property:ro.crypto.type=file
     start time_daemon
 
 on property:sys.usb.config=mtp,adb && property:ro.crypto.state=encrypted && property:ro.crypto.type=file
@@ -23,9 +23,10 @@ on property:twrp.all.users.decrypted=true
     stop hwservicemanager
     stop keymaster-4-0-qti
 
-service gatekeeper-1-0-qti /sbin/android.hardware.gatekeeper@1.0-service-qti
+service gatekeeper-1-0-qti /system/bin/android.hardware.gatekeeper@1.0-service-qti
     user root
     group root
+    setenv LD_LIBRARY_PATH /vendor/lib64:/vendor/lib:/system/lib64:/system/lib
     disabled
     seclabel u:r:recovery:s0
 
@@ -49,8 +50,9 @@ service servicemanager /system/bin/servicemanager
     disabled
     seclabel u:r:recovery:s0
 
-service time_daemon /sbin/time_daemon
+service time_daemon /system/bin/time_daemon
     user root
     group root
+    setenv LD_LIBRARY_PATH /vendor/lib64:/vendor/lib:/system/lib64:/system/lib
     disabled
     seclabel u:r:recovery:s0
