@@ -45,6 +45,23 @@ on fs
     # Load Tuxera exFAT module
     insmod /vendor/lib/modules/texfat.ko
 
+# +++ ASUS_BSP : mount asdf partition
+on property:init.svc.recovery=running
+    mkdir /asdf
+    wait /dev/block/bootdevice/by-name/asdf
+    exec /system/bin/e2fsck -p /dev/block/bootdevice/by-name/asdf
+    mount ext4 /dev/block/bootdevice/by-name/asdf /asdf nosuid nodev noatime barrier=1
+    chmod 0777 /asdf
+
+    mkdir /vendor/asdf
+    mkdir /vendor/asdf/recovery1
+    chmod 0644 /asdf/recovery
+
+    restorecon_recursive /asdf
+    write /proc/asusevtlog RECOVERY_MODE
+
+# --- ASUS_BSP : mount asdf partition
+
 service boot-1-0 /system/bin/android.hardware.boot@1.0-service
     user root
     group root
