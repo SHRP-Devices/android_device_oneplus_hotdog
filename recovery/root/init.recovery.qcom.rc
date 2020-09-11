@@ -33,6 +33,7 @@ on init
     mkdir /dev/fscklogs 0770 root system
 
     start boot-1-0
+    start vibrator-1-2
 
 on fs
     wait /dev/block/platform/soc/${ro.boot.bootdevice}
@@ -63,6 +64,12 @@ on property:init.svc.recovery=running
 # --- ASUS_BSP : mount asdf partition
 
 service boot-1-0 /system/bin/android.hardware.boot@1.0-service
+    user root
+    group root
+    disabled
+    seclabel u:r:recovery:s0
+
+service vibrator-1-2 /system/bin/vendor.qti.hardware.vibrator@1.2-service
     user root
     group root
     disabled

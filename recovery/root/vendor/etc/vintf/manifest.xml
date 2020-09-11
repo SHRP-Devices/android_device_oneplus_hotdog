@@ -1,8 +1,8 @@
-<!--
+F<!--
     Input:
         manifest.xml
         manifest_ab.xml
-        manifest_zs661ks.xml
+        manifest_zs670ks.xml
         manifest.xml
         manifest.xml
         airtrigger.xml
@@ -10,7 +10,6 @@
         zenmotion.xml
         wifiantennamode.xml
         twinviewdock.xml
-        colortemp.xml
 -->
 <manifest version="1.0" type="device" target-level="4">
     <hal format="hidl">
@@ -331,12 +330,12 @@
     <hal format="hidl">
         <name>android.hardware.vibrator</name>
         <transport>hwbinder</transport>
-        <version>1.0</version>
+        <version>1.2</version>
         <interface>
             <name>IVibrator</name>
             <instance>default</instance>
         </interface>
-        <fqname>@1.0::IVibrator/default</fqname>
+        <fqname>@1.2::IVibrator/default</fqname>
     </hal>
     <hal format="hidl">
         <name>android.hardware.wifi</name>
@@ -419,16 +418,6 @@
         <fqname>@1.0::IAsusBspCameraInterface/default</fqname>
     </hal>
     <hal format="hidl">
-        <name>vendor.asus.hardware.vibratorcontrol</name>
-        <transport>hwbinder</transport>
-        <version>1.0</version>
-        <interface>
-            <name>IVibratorcontrol</name>
-            <instance>default</instance>
-        </interface>
-        <fqname>@1.0::IVibratorcontrol/default</fqname>
-    </hal>
-    <hal format="hidl">
         <name>vendor.goodix.hardware.biometrics.fingerprint</name>
         <transport>hwbinder</transport>
         <version>2.1</version>
@@ -447,16 +436,6 @@
             <instance>default</instance>
         </interface>
         <fqname>@1.2::IAirTrigger/default</fqname>
-    </hal>
-    <hal format="hidl">
-        <name>vendor.ims.colortemp</name>
-        <transport>hwbinder</transport>
-        <version>1.0</version>
-        <interface>
-            <name>IColorTemp</name>
-            <instance>default</instance>
-        </interface>
-        <fqname>@1.0::IColorTemp/default</fqname>
     </hal>
     <hal format="hidl">
         <name>vendor.ims.glovemode</name>
@@ -577,16 +556,6 @@
             <instance>default</instance>
         </interface>
         <fqname>@1.0::IAudioHalExt/default</fqname>
-    </hal>
-    <hal format="hidl">
-        <name>vendor.qti.hardware.auralight</name>
-        <transport>hwbinder</transport>
-        <version>1.0</version>
-        <interface>
-            <name>IAuraLight</name>
-            <instance>default</instance>
-        </interface>
-        <fqname>@1.0::IAuraLight/default</fqname>
     </hal>
     <hal format="hidl">
         <name>vendor.qti.hardware.bluetooth_audio</name>
@@ -1089,6 +1058,16 @@
             <instance>default</instance>
         </interface>
         <fqname>@1.0::ISlaService/default</fqname>
+    </hal>
+    <hal format="hidl">
+        <name>vendor.qti.spu</name>
+        <transport>hwbinder</transport>
+        <version>1.0</version>
+        <interface>
+            <name>ISPUManager</name>
+            <instance>default</instance>
+        </interface>
+        <fqname>@1.0::ISPUManager/default</fqname>
     </hal>
     <sepolicy>
         <version>29.0</version>
