@@ -166,12 +166,11 @@ TW_EXCLUDE_DEFAULT_USB_INIT := true
 TW_EXCLUDE_ENCRYPTED_BACKUPS := true
 TW_EXCLUDE_TWRPAPP := true
 TW_EXTRA_LANGUAGES := true
-TW_HAS_EDL_MODE := true
+#TW_HAS_EDL_MODE := true
 TW_INCLUDE_NTFS_3G := true
 TW_INPUT_BLACKLIST := "hbtp_vm"
 TW_NO_BIND_SYSTEM := true
 TW_NO_EXFAT_FUSE := true
-#TW_NO_USB_STORAGE := true
 TW_OVERRIDE_SYSTEM_PROPS := \
     "ro.build.product;ro.build.fingerprint=ro.system.build.fingerprint;ro.product.device=ro.product.system.device;ro.product.model=ro.product.system.model;ro.product.name=ro.product.system.name"
 TW_RECOVERY_ADDITIONAL_RELINK_BINARY_FILES += $(TARGET_OUT)/usr/share/zoneinfo/tzdata
