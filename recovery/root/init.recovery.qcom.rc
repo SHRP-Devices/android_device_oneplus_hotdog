@@ -33,7 +33,6 @@ on init
     mkdir /dev/fscklogs 0770 root system
 
     start boot-1-0
-    start vibrator-1-2
 
 on fs
     wait /dev/block/platform/soc/${ro.boot.bootdevice}
@@ -43,8 +42,18 @@ on fs
     chown root system /dev/fscklogs/log
     chmod 0770 /dev/fscklogs/log
 
+on property:ro.build.product=ZS670KS || property:ro.build.product=ZS671KS
     # Load Tuxera exFAT module
     insmod /vendor/lib/modules/texfat.ko
+
+    start vibrator-1-2
+
+# +++ ASUS_BSP : add for booting sound
+on property:sys.wipedata=1
+        write /proc/asusevtlog WIPE-DATA
+        rm /asdf/boot_sound_enabled
+        rm /asdf/boot_sound_vol_index
+# --- ASUS_BSP : add for booting sound
 
 # +++ ASUS_BSP : mount asdf partition
 on property:init.svc.recovery=running
