@@ -3,7 +3,6 @@
 /product														flags=logical;display="Product"
 /vendor															flags=logical;display="Vendor"
 /odm															flags=logical;display="Odm"
-/data															flags=fsflags="latemount,quota,reservedsize=128M,sysfs_path=/sys/devices/platform/soc/1d84000.ufshc,checkpoint=fs"
 /recovery														flags=display="Recovery";backup=1;flashimg=1
 /firmware														flags=display="Firmware";mounttodecrypt;fsflags=ro
 

@@ -8,7 +8,6 @@ on fs
     chown system system /dev/ion
 
 on property:ro.crypto.state=encrypted
-    setprop fbe.metadata.wrappedkey true
     start prepdecrypt
 
 on property:crypto.ready=1
