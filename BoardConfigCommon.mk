@@ -110,7 +110,9 @@ BOARD_SUPER_PARTITION_GROUPS := qti_dynamic_partitions
 BOARD_QTI_DYNAMIC_PARTITIONS_SIZE := 6441926656
 BOARD_QTI_DYNAMIC_PARTITIONS_PARTITION_LIST := \
     system \
-    product
+    vendor \
+    product \
+    odm
 
 # Partitions (listed in the file) to be wiped under recovery.
 TARGET_RECOVERY_WIPE := $(COMMON_PATH)/recovery.wipe
