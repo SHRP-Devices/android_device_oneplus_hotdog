@@ -2,6 +2,9 @@
 
 SCRIPTNAME="PrepDecrypt"
 LOGFILE=/tmp/recovery.log
+venbin="/vendor/bin"
+venlib="/vendor/lib"
+DEFAULTPROP=prop.default
 
 log_info()
 {
@@ -11,6 +14,20 @@ log_info()
 log_error()
 {
 	echo "E:$SCRIPTNAME:$1" >> "$LOGFILE"
+}
+
+relink()
+{
+	log_info "Looking for $1 to update linker path..."
+	if [ -f "$1" ]; then
+		fname=$(basename "$1")
+		target="/sbin/$fname"
+		log_info "File found! Relinking $1 to $target..."
+		sed 's|/system/bin/linker|///////sbin/linker|' "$1" > "$target"
+		chmod 755 "$target"
+	else
+		log_info "File not found. Proceeding without relinking..."
+	fi
 }
 
 finish()
@@ -23,19 +40,36 @@ finish()
 
 log_info "Running $SCRIPTNAME script for TWRP..."
 
+abi=$(getprop ro.product.cpu.abi)
 osver=$(getprop ro.build.version.release)
 osver_orig=$(getprop ro.build.version.release_orig)
 sdkver=$(getprop ro.build.version.sdk)
 patchlevel=$(getprop ro.build.version.security_patch)
 patchlevel_orig=$(getprop ro.build.version.security_patch_orig)
 
+case "$abi" in
+	*64*)
+		venlib="/vendor/lib64"
+		;;
+esac
+
 log_info "SDK version: $sdkver"
 if [ "$sdkver" -lt 26 ]; then
 	DEFAULTPROP=default.prop
-	log_info "DEFAULTPROP variable set to $DEFAULTPROP."
-else
-	DEFAULTPROP=prop.default
-	log_info "DEFAULTPROP variable set to $DEFAULTPROP."
+	log_info "Legacy device found! DEFAULTPROP variable set to $DEFAULTPROP."
+fi
+if [ "$sdkver" -lt 29 ]; then
+	relink "$venbin/qseecomd"
+	relink "$venbin/hw/android.hardware.keymaster@3.0-service"
+	relink "$venbin/hw/android.hardware.keymaster@3.0-service-qti"
+	relink "$venbin/hw/android.hardware.keymaster@4.0-service"
+	relink "$venbin/hw/android.hardware.keymaster@4.0-service-qti"
+	relink "$venlib/libQSEEComAPI.so"
+	if [ -f /init.recovery.qcom_decrypt.fbe.rc ]; then
+		log_info "FBE device detected! Performing additional relinking..."
+		relink "$venbin/hw/android.hardware.gatekeeper@1.0-service"
+		relink "$venbin/hw/android.hardware.gatekeeper@1.0-service-qti"
+	fi
 fi
 
 # Be sure to increase the PLATFORM_VERSION in build/core/version_defaults.mk to override Google's anti-rollback features to something rather insane
