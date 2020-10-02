@@ -7,7 +7,6 @@
 /firmware		vfat	/dev/block/bootdevice/by-name/modem									flags=slotselect;display="Firmware";mounttodecrypt;fsflags="ro,shortname=lower,uid=1000,gid=1000,dmask=227,fmask=337,context=u:object_r:firmware_file:s0"
 /recovery		emmc	/dev/block/bootdevice/by-name/recovery								flags=slotselect;display="Recovery";backup=1;flashimg=1
 /boot			emmc	/dev/block/bootdevice/by-name/boot									flags=slotselect
-/misc			emmc	/dev/block/bootdevice/by-name/misc
 
 # Persistent Firmware & Properties
 /persist		ext4	/dev/block/bootdevice/by-name/persist 								flags=display="Persist";fsflags=ro;backup=1
@@ -25,7 +24,7 @@
 /efsc			emmc	/dev/block/bootdevice/by-name/mdm1m9kefsc							flags=backup=1;subpartitionof=/efs1
 
 # ASUS-Specific partitions
-/asusfw			ext4	/dev/block/bootdevice/by-name/asusfw								flags=display="ASUS-specific Firmware";fsflags=ro
+/asusfw			ext4	/dev/block/bootdevice/by-name/asusfw								flags=display="ASUS-specific Firmware";fsflags=ro;slotselect;backup=1
 /batinfo		ext4	/dev/block/bootdevice/by-name/batinfo								flags=display="Battery Info";fsflags=ro
 
 # Removable storage

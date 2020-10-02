@@ -24,7 +24,7 @@ on property:twrp.all.users.decrypted=true
     stop keymaster-4-0
     stop keymaster-4-0-qti
 
-# For Android 10 trees, services should be placed in /system/bin in the recovery ramdisk
+# For Android 10+ trees, services should be placed in /system/bin in the recovery ramdisk
 # For older trees, the services should be placed in /sbin
 # Make sure the path of the service EXACTLY matches the location of the binary!!
 
