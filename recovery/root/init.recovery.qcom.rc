@@ -43,8 +43,9 @@ on fs
     chown root system /dev/fscklogs/log
     chmod 0770 /dev/fscklogs/log
 
-    # Load Tuxera exFAT module
+    # Load Tuxera exFAT & NTFS modules
     insmod /vendor/lib/modules/texfat.ko
+    insmod /vendor/lib/modules/tntfs.ko
 
 # +++ ASUS_BSP : add for booting sound
 on property:sys.wipedata=1

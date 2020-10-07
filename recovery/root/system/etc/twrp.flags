@@ -3,6 +3,7 @@
 /product																					flags=logical;display="Product"
 /vendor																						flags=logical;display="Vendor"
 /odm																						flags=logical;display="ODM"
+/data																						flags=wrappedkey
 /metadata		ext4	/dev/block/by-name/metadata											flags=display="Metadata";wrappedkey
 /firmware		vfat	/dev/block/bootdevice/by-name/modem									flags=slotselect;display="Firmware";mounttodecrypt;fsflags="ro,shortname=lower,uid=1000,gid=1000,dmask=227,fmask=337,context=u:object_r:firmware_file:s0"
 /recovery		emmc	/dev/block/bootdevice/by-name/recovery								flags=slotselect;display="Recovery";backup=1;flashimg=1
