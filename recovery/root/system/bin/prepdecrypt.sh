@@ -38,6 +38,49 @@ finish()
 	exit 0
 }
 
+osver_default_value()
+{
+	osver_default=$(grep "$1" /$DEFAULTPROP)
+	log_info "$DEFAULTPROP value: $osver_default"
+}
+
+patchlevel_default_value()
+{
+	patchlevel_default=$(grep "$1" /$DEFAULTPROP)
+	log_info "$DEFAULTPROP value: $patchlevel_default"
+	finish
+}
+
+update_default_values()
+{
+	if [ -z "$1" ]; then
+		log_info "$4=$1"
+		log_error "No $3. Checking original props..."
+		if [ -n "$2" ]; then
+			log_info "Original $3 found. $4_orig=$2"
+			log_info "Setting $3 to original value..."
+			setprop "$4" "$2"
+			log_info "$3 set. $4=$1"
+			log_info "Updating $DEFAULTPROP with Original $3..."
+			echo "$4=$2" >> "/$DEFAULTPROP";
+			$5 "$4"
+		else
+			log_error "No Original $3 found. Setting default value..."
+			osver="16.1.0"
+			patchlevel="2099-12-31"
+			setprop "$4" "$1"
+			log_info "$3 set. $4=$1"
+			log_info "Updating $DEFAULTPROP with default $3..."
+			echo "$4=$1" >> "/$DEFAULTPROP";
+			$5 "$4"
+		fi
+	else
+		log_info "$3 exists! $4=$1"
+		$5 "$4"
+	fi
+}
+
+
 log_info "Running $SCRIPTNAME script for TWRP..."
 
 abi=$(getprop ro.product.cpu.abi)
@@ -73,60 +116,5 @@ if [ "$sdkver" -lt 29 ]; then
 fi
 
 # Be sure to increase the PLATFORM_VERSION in build/core/version_defaults.mk to override Google's anti-rollback features to something rather insane
-if [ -z "$osver" ]; then
-	log_info "ro.build.version.release=$osver"
-	log_error "No OS version found. Checking original props..."
-	if [ -n "$osver_orig" ]; then
-		log_info "Original OS version found. ro.build.version.release_orig=$osver_orig"
-		log_info "Settings OS version to original value..."
-		setprop ro.build.version.release "$osver_orig"
-		log_info "OS version set. ro.build.version.release=$osver"
-		log_info "Updating $DEFAULTPROP with Original OS version..."
-		echo "ro.build.version.release=$osver_orig" >> "/$DEFAULTPROP";
-		osver_default=$(grep ro.build.version.release /$DEFAULTPROP)
-		log_info "$DEFAULTPROP updated. $osver_default"
-	else
-		log_error "No Original OS version found. Setting default value..."
-		osver="16.1.0"
-		setprop ro.build.version.release "$osver"
-		log_info "OS version set. ro.build.version.release=$osver"
-		log_info "Updating $DEFAULTPROP with default OS version..."
-		echo "ro.build.version.release=$osver" >> "/$DEFAULTPROP";
-		osver_default=$(grep ro.build.version.release /$DEFAULTPROP)
-		log_info "$DEFAULTPROP updated. $osver_default"
-	fi
-else
-	log_info "OS version exists! ro.build.version.release=$osver"
-	osver_default=$(grep ro.build.version.release /$DEFAULTPROP)
-	log_info "$DEFAULTPROP value: $osver_default"
-fi
-if [ -z "$patchlevel" ]; then
-	log_info "ro.build.version.security_patch=$patchlevel"
-	log_error "No Security Patch Level found. Checking original props..."
-	if [ -n "$patchlevel_orig" ]; then
-		log_info "Original Security Patch Level found. ro.build.version.security_patch_orig=$patchlevel_orig"
-		log_info "Settings Security Patch Level to original value..."
-		setprop ro.build.version.security_patch "$patchlevel_orig"
-		log_info "Security Patch Level set. ro.build.version.security_patch=$patchlevel"
-		log_info "Updating $DEFAULTPROP with Original Security Patch Level..."
-		echo "ro.build.version.security_patch=$patchlevel_orig" >> "/$DEFAULTPROP";
-		patchlevel_default=$(grep ro.build.version.security_patch /$DEFAULTPROP)
-		log_info "$DEFAULTPROP updated. $patchlevel_default"
-		finish
-	else
-		log_error "No Original Security Patch Level found. Setting default value..."
-		patchlevel="2099-12-31"
-		setprop ro.build.version.security_patch "$patchlevel"
-		log_info "Security Patch Level set. ro.build.version.security_patch=$patchlevel"
-		log_info "Updating $DEFAULTPROP with default Security Patch Level..."
-		echo "ro.build.version.security_patch=$patchlevel" >> "/$DEFAULTPROP";
-		patchlevel_default=$(grep ro.build.version.security_patch /$DEFAULTPROP)
-		log_info "$DEFAULTPROP updated. $patchlevel_default"
-		finish
-	fi
-else
-	log_info "Security Patch Level exists! ro.build.version.security_patch=$patchlevel"
-	patchlevel_default=$(grep ro.build.version.security_patch /$DEFAULTPROP)
-	log_info "$DEFAULTPROP value: $patchlevel_default"
-	finish
-fi
+update_default_values "$osver" "$osver_orig" "OS version" "ro.build.version.release" osver_default_value
+update_default_values "$patchlevel" "$patchlevel_orig" "Security Patch Level" "ro.build.version.security_patch" patchlevel_default_value
