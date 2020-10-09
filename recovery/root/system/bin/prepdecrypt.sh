@@ -119,6 +119,7 @@ if [ "$sdkver" -lt 29 ]; then
 	relink "$venlib/libQSEEComAPI.so"
 	if [ -f /init.recovery.qcom_decrypt.fbe.rc ]; then
 		log_print 2 "FBE device detected! Performing additional relinking..."
+		relink "$venbin/time_daemon"
 		relink "$venbin/hw/android.hardware.gatekeeper@1.0-service"
 		relink "$venbin/hw/android.hardware.gatekeeper@1.0-service-qti"
 	fi
