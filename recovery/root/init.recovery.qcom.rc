@@ -32,9 +32,6 @@ on init
     # checker programs.
     mkdir /dev/fscklogs 0770 root system
 
-    start boot-1-0
-    start vibrator-1-2
-
 on fs
     wait /dev/block/platform/soc/${ro.boot.bootdevice}
     symlink /dev/block/platform/soc/${ro.boot.bootdevice} /dev/block/bootdevice
@@ -46,6 +43,9 @@ on fs
     # Load Tuxera exFAT & NTFS modules
     insmod /vendor/lib/modules/texfat.ko
     insmod /vendor/lib/modules/tntfs.ko
+
+on boot
+    start vibrator-1-2
 
 # +++ ASUS_BSP : add for booting sound
 on property:sys.wipedata=1
@@ -70,12 +70,6 @@ on property:init.svc.recovery=running
     write /proc/asusevtlog RECOVERY_MODE
 
 # --- ASUS_BSP : mount asdf partition
-
-service boot-1-0 /system/bin/android.hardware.boot@1.0-service
-    user root
-    group root
-    disabled
-    seclabel u:r:recovery:s0
 
 service vibrator-1-2 /system/bin/vendor.qti.hardware.vibrator@1.2-service
     user root

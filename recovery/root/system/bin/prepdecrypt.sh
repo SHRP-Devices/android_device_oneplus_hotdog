@@ -9,7 +9,7 @@ DEFAULTPROP=prop.default
 # Set default log level
 # Based on https://stackoverflow.com/questions/8455991/elegant-way-for-verbose-mode-in-scripts
 # 0=Errors only; 1=Errors & Information; 2=Errors, Information, & Debugging
-__VERBOSE=0
+__VERBOSE=1
 
 declare -a LOG_LEVELS
 LOG_LEVELS=(E I DEBUG)
