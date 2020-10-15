@@ -34,11 +34,6 @@ on init
     # checker programs.
     mkdir /dev/fscklogs 0770 root system
 
-    # Start essential services.
-    start servicemanager
-    start hwservicemanager
-    start vndservicemanager
-
 on fs
     wait /dev/block/platform/soc/${ro.boot.bootdevice}
     symlink /dev/block/platform/soc/${ro.boot.bootdevice} /dev/block/bootdevice
@@ -87,7 +82,6 @@ on property:sys.usb.config=fastboot
 service boot-hal-1-0 /system/bin/android.hardware.boot@1.0-service
     user root
     group root
-    setenv LD_LIBRARY_PATH /vendor/lib64:/vendor/lib:/system/lib64:/system/lib:/sbin
     disabled
     seclabel u:r:recovery:s0
 
@@ -95,15 +89,8 @@ service health-hal-2-0 /system/bin/android.hardware.health@2.0-service
     disabled
     user root
     group root
-    setenv LD_LIBRARY_PATH /vendor/lib64:/vendor/lib:/system/lib64:/system/lib:/sbin
     capabilities WAKE_ALARM
     file /dev/kmsg w
-    seclabel u:r:recovery:s0
-
-service hwservicemanager /system/bin/hwservicemanager
-    user root
-    group root
-    disabled
     seclabel u:r:recovery:s0
 
 service qti.vibrator-1-2 /system/bin/vendor.qti.hardware.vibrator@1.2-service
@@ -111,20 +98,4 @@ service qti.vibrator-1-2 /system/bin/vendor.qti.hardware.vibrator@1.2-service
     group root
     disabled
     setenv LD_LIBRARY_PATH /vendor/lib64:/vendor/lib:/system/lib64:/system/lib:/sbin
-    seclabel u:r:recovery:s0
-
-service servicemanager /system/bin/servicemanager
-    user root
-    group root readproc
-    disabled
-    seclabel u:r:recovery:s0
-
-service vndservicemanager /system/bin/vndservicemanager /dev/vndbinder
-    disabled
-    user root
-    group root
-    writepid /dev/cpuset/system-background/tasks
-    setenv LD_LIBRARY_PATH /vendor/lib64:/vendor/lib:/system/lib64:/system/lib:/sbin
-    writepid /dev/cpuset/system-background/tasks
-    shutdown critical
     seclabel u:r:recovery:s0

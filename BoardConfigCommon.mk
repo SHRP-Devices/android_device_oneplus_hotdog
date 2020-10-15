@@ -129,7 +129,7 @@ BOARD_HAS_NO_SELECT_BUTTON := true
 BOARD_SUPPRESS_SECURE_ERASE := true
 TARGET_NO_RECOVERY := false
 TARGET_RECOVERY_DEVICE_MODULES += android.hidl.base@1.0 ashmemd_aidl_interface-cpp bootctrl.$(TARGET_BOARD_PLATFORM).recovery
-TARGET_RECOVERY_DEVICE_MODULES += libashmemd_client libcap libion libpcrecpp libxml2
+TARGET_RECOVERY_DEVICE_MODULES += libashmemd_client libcap libicui18n libicuuc libion libpcrecpp libxml2
 TARGET_RECOVERY_DEVICE_MODULES += android.hardware.boot@1.0-service android.hardware.health@2.0-service tzdata vndservicemanager
 
 # Use mke2fs to create ext4 images
@@ -177,7 +177,7 @@ TW_OVERRIDE_SYSTEM_PROPS := \
     "ro.build.product;ro.build.fingerprint=ro.system.build.fingerprint;ro.build.version.incremental;ro.product.device=ro.product.system.device;ro.product.model=ro.product.system.model;ro.product.name=ro.product.system.name"
 TW_RECOVERY_ADDITIONAL_RELINK_BINARY_FILES += $(TARGET_OUT_VENDOR_EXECUTABLES)/hw/android.hardware.boot@1.0-service $(TARGET_OUT_VENDOR_EXECUTABLES)/hw/android.hardware.health@2.0-service $(TARGET_OUT)/usr/share/zoneinfo/tzdata $(TARGET_OUT_VENDOR_EXECUTABLES)/vndservicemanager
 TW_RECOVERY_ADDITIONAL_RELINK_LIBRARY_FILES += $(TARGET_OUT_SHARED_LIBRARIES)/android.hidl.base@1.0.so $(TARGET_OUT_SHARED_LIBRARIES)/libashmemd_client.so $(TARGET_OUT_SHARED_LIBRARIES)/ashmemd_aidl_interface-cpp.so
-TW_RECOVERY_ADDITIONAL_RELINK_LIBRARY_FILES += $(TARGET_OUT_SHARED_LIBRARIES)/libcap.so $(TARGET_OUT_SHARED_LIBRARIES)/libion.so $(TARGET_OUT_SHARED_LIBRARIES)/libpcrecpp.so $(TARGET_OUT_SHARED_LIBRARIES)/libxml2.so
+TW_RECOVERY_ADDITIONAL_RELINK_LIBRARY_FILES += $(TARGET_OUT_SHARED_LIBRARIES)/libcap.so $(TARGET_OUT_SHARED_LIBRARIES)/libicui18n.so $(TARGET_OUT_SHARED_LIBRARIES)/libicuuc.so $(TARGET_OUT_SHARED_LIBRARIES)/libion.so $(TARGET_OUT_SHARED_LIBRARIES)/libpcrecpp.so $(TARGET_OUT_SHARED_LIBRARIES)/libxml2.so
 #TW_NO_SCREEN_BLANK := true
 #TW_MAX_BRIGHTNESS := 1023
 
