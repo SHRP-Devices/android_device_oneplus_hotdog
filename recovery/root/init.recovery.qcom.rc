@@ -46,11 +46,7 @@ on fs
     insmod /vendor/lib/modules/texfat.ko
     insmod /vendor/lib/modules/tntfs.ko
 
-on post-fs
-    start boot-hal-1-0
-
 on boot
-    start health-hal-2-0
     start qti.vibrator-1-2
 
 # +++ ASUS_BSP : add for booting sound
@@ -78,20 +74,6 @@ on property:init.svc.recovery=running
 
 on property:sys.usb.config=fastboot
     restart fastbootd
-
-service boot-hal-1-0 /system/bin/android.hardware.boot@1.0-service
-    user root
-    group root
-    disabled
-    seclabel u:r:recovery:s0
-
-service health-hal-2-0 /system/bin/android.hardware.health@2.0-service
-    disabled
-    user root
-    group root
-    capabilities WAKE_ALARM
-    file /dev/kmsg w
-    seclabel u:r:recovery:s0
 
 service qti.vibrator-1-2 /system/bin/vendor.qti.hardware.vibrator@1.2-service
     user root
