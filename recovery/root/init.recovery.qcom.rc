@@ -72,9 +72,6 @@ on property:init.svc.recovery=running
 
 # --- ASUS_BSP : mount asdf partition
 
-on property:sys.usb.config=fastboot
-    restart fastbootd
-
 service qti.vibrator-1-2 /system/bin/vendor.qti.hardware.vibrator@1.2-service
     user root
     group root

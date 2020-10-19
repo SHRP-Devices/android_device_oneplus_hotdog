@@ -54,5 +54,4 @@ service keystore /system/bin/keystore /tmp/misc/keystore
     user root
     group root drmrpc readproc log
     disabled
-    writepid /dev/cpuset/foreground/tasks
     seclabel u:r:recovery:s0
