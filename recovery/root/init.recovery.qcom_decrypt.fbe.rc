@@ -1,6 +1,3 @@
-on early-fs
-    start vold
-
 on fs
     install_keyring
 
