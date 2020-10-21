@@ -7,6 +7,9 @@ on fs
     chmod 0664 /dev/ion
     chown system system /dev/ion
 
+# twrp.apex.loaded=true prop is only for devices with dynamic partitions
+# including that prop prevents decryption services from loading
+# when entering fastbootd
 on property:ro.crypto.state=encrypted && property:twrp.apex.loaded=true
     start prepdecrypt
 
