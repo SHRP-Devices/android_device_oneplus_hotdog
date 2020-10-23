@@ -6,17 +6,28 @@ DEFAULTPROP=prop.default
 SETPATCH=false
 
 # Set default log level
-# Based on https://stackoverflow.com/questions/8455991/elegant-way-for-verbose-mode-in-scripts
 # 0=Errors only; 1=Errors & Information; 2=Errors, Information, & Debugging
 __VERBOSE=1
 
-declare -a LOG_LEVELS
-LOG_LEVELS=(E I DEBUG)
 log_print()
 {
 	# 0 = Error; 1 = Information; 2 = Debugging
+	case $1 in
+		0)
+			LOG_LEVEL="E"
+			;;
+		1)
+			LOG_LEVEL="I"
+			;;
+		2)
+			LOG_LEVEL="DEBUG"
+			;;
+		*)
+			LOG_LEVEL="UNKNOWN"
+			;;
+	esac
 	if [ $__VERBOSE -ge "$1" ]; then
-		echo "${LOG_LEVELS[$1]}:$SCRIPTNAME::$2" >> "$LOGFILE"
+		echo "$LOG_LEVEL:$SCRIPTNAME::$2" >> "$LOGFILE"
 	fi
 }
 
