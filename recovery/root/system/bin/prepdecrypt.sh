@@ -233,8 +233,16 @@ if [ "$sdkver" -ge 26 ]; then
 						sed -i "s/\<ro.vendor.build.security_patch=\>.*/ro.vendor.build.security_patch=""$venpatchlevel""/g" "/$DEFAULTPROP" ;
 						venpatchlevel_new=$(getprop ro.vendor.build.security_patch)
 						venpatchlevel_default=$(grep -i 'ro.vendor.build.security_patch=' /$DEFAULTPROP)
-						log_print 2 "New Vendor Security Patch Level: $venpatchlevel_new"
-						log_print 2 "$DEFAULTPROP value: $venpatchlevel_default"
+						if [ "$venpatchlevel" = "$venpatchlevel_new" ]; then
+							log_print 2 "$setprop_bin successful! New Vendor Security Patch Level: $venpatchlevel_new"
+						else
+							log_print 0 "$setprop_bin failed. Vendor Security Patch Level unchanged."
+						fi
+						if [ "$venpatchlevel" = "$venpatchlevel_default" ]; then
+							log_print 2 "$DEFAULTPROP update successful! ro.vendor.build.security_patch=$venpatchlevel_default"
+						else
+							log_print 0 "$DEFAULTPROP update failed. Vendor Security Patch Level unchanged."
+						fi
 					fi
 				else
 					log_print 2 "Current vendor is Nougat or older. Skipping vendor security patch level setting..."
@@ -267,8 +275,16 @@ if [ "$sdkver" -ge 26 ]; then
 					sed -i "s/\<ro.build.version.release=\>.*/ro.build.version.release=""$osver""/g" "/$DEFAULTPROP" ;
 					osver_new=$(getprop ro.build.version.release)
 					osver_default=$(grep -i 'ro.build.version.release=' /$DEFAULTPROP)
-					log_print 2 "New OS Version: $osver_new"
-					log_print 2 "$DEFAULTPROP value: $osver_default"
+					if [ "$osver" = "$osver_new" ]; then
+						log_print 2 "$setprop_bin successful! New OS Version: $osver_new"
+					else
+						log_print 0 "$setprop_bin failed. OS Version unchanged."
+					fi
+					if [ "$osver" = "$osver_default" ]; then
+						log_print 2 "$DEFAULTPROP update successful! ro.build.version.release=$osver_default"
+					else
+						log_print 0 "$DEFAULTPROP update failed. OS Version unchanged."
+					fi
 				fi
 				log_print 2 "Current Security Patch Level: $patchlevel"
 				patchlevel=$(grep -i 'ro.build.version.security_patch=' "$TEMPSYS/$BUILDPROP"  | cut -f2 -d'=' -s)
@@ -277,8 +293,16 @@ if [ "$sdkver" -ge 26 ]; then
 					sed -i "s/\<ro.build.version.security_patch=\>.*/ro.build.version.security_patch=""$patchlevel""/g" "/$DEFAULTPROP" ;
 					patchlevel_new=$(getprop ro.build.version.security_patch)
 					patchlevel_default=$(grep -i 'ro.build.version.security_patch=' /$DEFAULTPROP)
-					log_print 2 "New Security Patch Level: $patchlevel_new"
-					log_print 2 "$DEFAULTPROP value: $patchlevel_default"
+					if [ "$patchlevel" = "$patchlevel_new" ]; then
+						log_print 2 "$setprop_bin successful! New Security Patch Level: $patchlevel_new"
+					else
+						log_print 0 "$setprop_bin failed. Security Patch Level unchanged."
+					fi
+					if [ "$patchlevel" = "$patchlevel_default" ]; then
+						log_print 2 "$DEFAULTPROP update successful! ro.build.version.security_patch=$patchlevel_default"
+					else
+						log_print 0 "$DEFAULTPROP update failed. Security Patch Level unchanged."
+					fi
 				fi
 				finish
 			else
