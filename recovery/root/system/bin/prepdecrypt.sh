@@ -190,12 +190,17 @@ fi
 if [ "$sdkver" -ge 26 ]; then
 	is_fastboot_boot=$(grep skip_initramfs /proc/cmdline)
 	if [ "$SETPATCH" = false ] || [ -n "$is_fastboot_boot" ]; then
+		log_print 2 "SETPATCH=false or skip_initramfs flag found."
 		# Be sure to increase the PLATFORM_VERSION in build/core/version_defaults.mk to override Google's anti-rollback features to something rather insane
 		update_default_values "$osver" "$osver_orig" "OS version" "ro.build.version.release" osver_default_value
 		update_default_values "$patchlevel" "$patchlevel_orig" "Security Patch Level" "ro.build.version.security_patch" patchlevel_default_value
 	else
+		if [ ! "$SETPATCH" = true ]; then
+			SETPATCH=true
+		fi
+		log_print 2 "SETPATCH=$SETPATCH"
 		log_print 2 "Build tree is Oreo or above. Proceed with setting props..."
-		SETPATCH=true
+
 		BUILDPROP=build.prop
 		TEMPSYS=/s
 		suffix=$(getprop ro.boot.slot_suffix)
@@ -226,7 +231,10 @@ if [ "$sdkver" -ge 26 ]; then
 					if [ -n "$venpatchlevel" ]; then
 						$setprop_bin "ro.vendor.build.security_patch" "$venpatchlevel"
 						sed -i "s/\<ro.vendor.build.security_patch=\>.*/ro.vendor.build.security_patch=""$venpatchlevel""/g" "/$DEFAULTPROP" ;
-						log_print 2 "New Vendor Security Patch Level: $venpatchlevel"
+						venpatchlevel_new=$(getprop ro.vendor.build.security_patch)
+						venpatchlevel_default=$(grep -i 'ro.vendor.build.security_patch=' /$DEFAULTPROP)
+						log_print 2 "New Vendor Security Patch Level: $venpatchlevel_new"
+						log_print 2 "$DEFAULTPROP value: $venpatchlevel_default"
 					fi
 				else
 					log_print 2 "Current vendor is Nougat or older. Skipping vendor security patch level setting..."
@@ -257,14 +265,20 @@ if [ "$sdkver" -ge 26 ]; then
 				if [ -n "$osver" ]; then
 					$setprop_bin "ro.build.version.release" "$osver"
 					sed -i "s/\<ro.build.version.release=\>.*/ro.build.version.release=""$osver""/g" "/$DEFAULTPROP" ;
-					log_print 2 "New OS Version: $osver"
+					osver_new=$(getprop ro.build.version.release)
+					osver_default=$(grep -i 'ro.build.version.release=' /$DEFAULTPROP)
+					log_print 2 "New OS Version: $osver_new"
+					log_print 2 "$DEFAULTPROP value: $osver_default"
 				fi
 				log_print 2 "Current Security Patch Level: $patchlevel"
 				patchlevel=$(grep -i 'ro.build.version.security_patch=' "$TEMPSYS/$BUILDPROP"  | cut -f2 -d'=' -s)
 				if [ -n "$patchlevel" ]; then
 					$setprop_bin "ro.build.version.security_patch" "$patchlevel"
 					sed -i "s/\<ro.build.version.security_patch=\>.*/ro.build.version.security_patch=""$patchlevel""/g" "/$DEFAULTPROP" ;
-					log_print 2 "New Security Patch Level: $patchlevel"
+					patchlevel_new=$(getprop ro.build.version.security_patch)
+					patchlevel_default=$(grep -i 'ro.build.version.security_patch=' /$DEFAULTPROP)
+					log_print 2 "New Security Patch Level: $patchlevel_new"
+					log_print 2 "$DEFAULTPROP value: $patchlevel_default"
 				fi
 				finish
 			else
