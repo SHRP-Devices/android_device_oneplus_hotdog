@@ -3,6 +3,8 @@
 SCRIPTNAME="PrepDecrypt"
 LOGFILE=/tmp/recovery.log
 DEFAULTPROP=prop.default
+
+# This should be set to true for devices with recovery-in-boot
 SETPATCH=false
 
 # Set default log level
@@ -230,9 +232,9 @@ if [ "$sdkver" -ge 26 ]; then
 					venpatchlevel=$(grep -i 'ro.vendor.build.security_patch=' "$TEMPVEN/$BUILDPROP"  | cut -f2 -d'=' -s)
 					if [ -n "$venpatchlevel" ]; then
 						$setprop_bin "ro.vendor.build.security_patch" "$venpatchlevel"
-						sed -i "s/\<ro.vendor.build.security_patch=\>.*/ro.vendor.build.security_patch=""$venpatchlevel""/g" "/$DEFAULTPROP" ;
+						sed -i "s/ro.vendor.build.security_patch=.*/ro.vendor.build.security_patch=""$venpatchlevel""/g" "/$DEFAULTPROP" ;
 						venpatchlevel_new=$(getprop ro.vendor.build.security_patch)
-						venpatchlevel_default=$(grep -i 'ro.vendor.build.security_patch=' /$DEFAULTPROP)
+						venpatchlevel_default=$(grep -i 'ro.vendor.build.security_patch=' /$DEFAULTPROP | cut -f2 -d'=' -s)
 						if [ "$venpatchlevel" = "$venpatchlevel_new" ]; then
 							log_print 2 "$setprop_bin successful! New Vendor Security Patch Level: $venpatchlevel_new"
 						else
@@ -263,7 +265,7 @@ if [ "$sdkver" -ge 26 ]; then
 			sdkver=$(grep -i 'ro.build.version.sdk=' "$TEMPSYS/$BUILDPROP"  | cut -f2 -d'=' -s)
 			log_print 2 "Current system Android SDK version: $sdkver"
 			if [ "$sdkver" -gt 25 ]; then
-				log_print 2 "Current system is Oreo or above. Proceed with setting vendor security patch level..."
+				log_print 2 "Current system is Oreo or above. Proceed with setting OS Version & Security Patch Level..."
 				if [ -z "$setprop_bin" ]; then
 					check_resetprop
 				fi
@@ -272,9 +274,9 @@ if [ "$sdkver" -ge 26 ]; then
 				osver=$(grep -i 'ro.build.version.release=' "$TEMPSYS/$BUILDPROP"  | cut -f2 -d'=' -s)
 				if [ -n "$osver" ]; then
 					$setprop_bin "ro.build.version.release" "$osver"
-					sed -i "s/\<ro.build.version.release=\>.*/ro.build.version.release=""$osver""/g" "/$DEFAULTPROP" ;
+					sed -i "s/ro.build.version.release=.*/ro.build.version.release=""$osver""/g" "/$DEFAULTPROP" ;
 					osver_new=$(getprop ro.build.version.release)
-					osver_default=$(grep -i 'ro.build.version.release=' /$DEFAULTPROP)
+					osver_default=$(grep -i 'ro.build.version.release=' /$DEFAULTPROP | cut -f2 -d'=' -s)
 					if [ "$osver" = "$osver_new" ]; then
 						log_print 2 "$setprop_bin successful! New OS Version: $osver_new"
 					else
@@ -290,9 +292,9 @@ if [ "$sdkver" -ge 26 ]; then
 				patchlevel=$(grep -i 'ro.build.version.security_patch=' "$TEMPSYS/$BUILDPROP"  | cut -f2 -d'=' -s)
 				if [ -n "$patchlevel" ]; then
 					$setprop_bin "ro.build.version.security_patch" "$patchlevel"
-					sed -i "s/\<ro.build.version.security_patch=\>.*/ro.build.version.security_patch=""$patchlevel""/g" "/$DEFAULTPROP" ;
+					sed -i "s/ro.build.version.security_patch=.*/ro.build.version.security_patch=""$patchlevel""/g" "/$DEFAULTPROP" ;
 					patchlevel_new=$(getprop ro.build.version.security_patch)
-					patchlevel_default=$(grep -i 'ro.build.version.security_patch=' /$DEFAULTPROP)
+					patchlevel_default=$(grep -i 'ro.build.version.security_patch=' /$DEFAULTPROP | cut -f2 -d'=' -s)
 					if [ "$patchlevel" = "$patchlevel_new" ]; then
 						log_print 2 "$setprop_bin successful! New Security Patch Level: $patchlevel_new"
 					else
