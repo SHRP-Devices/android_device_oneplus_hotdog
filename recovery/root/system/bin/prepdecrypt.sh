@@ -192,7 +192,7 @@ fi
 if [ "$sdkver" -ge 26 ]; then
 	is_fastboot_boot=$(grep skip_initramfs /proc/cmdline)
 	if [ "$SETPATCH" = false ] || [ -n "$is_fastboot_boot" ]; then
-		log_print 2 "SETPATCH=false or skip_initramfs flag found."
+		log_print 1 "SETPATCH=false or skip_initramfs flag found."
 		# Be sure to increase the PLATFORM_VERSION in build/core/version_defaults.mk to override Google's anti-rollback features to something rather insane
 		update_default_values "$osver" "$osver_orig" "OS version" "ro.build.version.release" osver_default_value
 		update_default_values "$patchlevel" "$patchlevel_orig" "Security Patch Level" "ro.build.version.security_patch" patchlevel_default_value
@@ -200,7 +200,7 @@ if [ "$sdkver" -ge 26 ]; then
 		if [ ! "$SETPATCH" = true ]; then
 			SETPATCH=true
 		fi
-		log_print 2 "SETPATCH=$SETPATCH"
+		log_print 1 "SETPATCH=$SETPATCH"
 		log_print 2 "Build tree is Oreo or above. Proceed with setting props..."
 
 		BUILDPROP=build.prop
