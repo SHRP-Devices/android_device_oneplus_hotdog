@@ -1,4 +1,4 @@
-on fs
+on property:ro.crypto.state=encrypted && property:ro.crypto.type=file
     install_keyring
 
 on property:vendor.sys.listeners.registered=true
@@ -30,6 +30,7 @@ service gatekeeper-1-0 /sbin/android.hardware.gatekeeper@1.0-service
     group root
     setenv LD_LIBRARY_PATH /vendor/lib64:/vendor/lib:/sbin:/system/lib64:/system/lib
     disabled
+    oneshot
     seclabel u:r:recovery:s0
 
 service gatekeeper-1-0-qti /system/bin/android.hardware.gatekeeper@1.0-service-qti
@@ -37,6 +38,7 @@ service gatekeeper-1-0-qti /system/bin/android.hardware.gatekeeper@1.0-service-q
     group root
     setenv LD_LIBRARY_PATH /vendor/lib64:/vendor/lib:/system/lib64:/system/lib:/sbin
     disabled
+    oneshot
     seclabel u:r:recovery:s0
 
 service keystore_auth /system/bin/keystore_auth

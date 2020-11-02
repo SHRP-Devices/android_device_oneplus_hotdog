@@ -8,8 +8,15 @@ DEFAULTPROP=prop.default
 SETPATCH=false
 
 # Set default log level
-# 0=Errors only; 1=Errors & Information; 2=Errors, Information, & Debugging
+# 0 Errors only
+# 1 Errors & Information
+# 2 Errors, Information, & Debugging
 __VERBOSE=1
+
+# Exit codes:
+# 0 Success
+# 1 Unknown encryption type
+# 2 Temp Mount Failure
 
 log_print()
 {
@@ -75,7 +82,7 @@ finish_error()
 	fi
 	setprop crypto.ready 1
 	log_print 0 "Script run incomplete. Device may not be ready for decryption."
-	exit 1
+	exit 2
 }
 
 osver_default_value()
@@ -120,6 +127,20 @@ update_default_values()
 	fi
 }
 
+check_encrypt()
+{
+	sleep 1
+	encrypt_type=$(getprop ro.crypto.type)
+	if [ "$encrypt_type" = "file" ]; then
+		log_print 1 "File Based Encryption (FBE) is present."
+	elif [ "$encrypt_type" = "block" ]; then
+		log_print 1 "Full Device Encryption (FDE) found."
+	else
+		log_print 0 "Unknown decryption type or type not set. Exiting script."
+		exit 1
+	fi
+}
+
 check_resetprop()
 {
 	if [ -e /system/bin/resetprop ] || [ -e /sbin/resetprop ]; then
@@ -149,7 +170,8 @@ temp_mount()
 	fi
 }
 
-log_print 1 "Running $SCRIPTNAME script for TWRP..."
+log_print 2 "Running $SCRIPTNAME script for TWRP..."
+check_encrypt
 
 osver=$(getprop ro.build.version.release)
 osver_orig=$(getprop ro.build.version.release_orig)
