@@ -1,16 +1,26 @@
 #!/sbin/sh
 
+# The below variables shouldn't need to be changed
+# unless you want to call the script something else
 SCRIPTNAME="PrepDecrypt"
 LOGFILE=/tmp/recovery.log
-DEFAULTPROP=prop.default
 
 # This should be set to true for devices with recovery-in-boot
 SETPATCH=false
+#
+# Default TWRP values for PLATFORM_VERSION and PLATFORM_SECURITY_PATCH
+#
+# ro.build.version.release and ro.build.version.security_patch will get
+# set to the below values respectively if these props are blank when
+# the script runs. These values should be updated to reflect the
+# TWRP defaults in your device's BoardConfig.mk
+osver_twrp="16.1.0"
+patchlevel_twrp="2099-12-31"
 
 # Set default log level
 # 0 Errors only
-# 1 Errors & Information
-# 2 Errors, Information, & Debugging
+# 1 Errors and Information
+# 2 Errors, Information, and Debugging
 __VERBOSE=1
 
 # Exit codes:
@@ -18,6 +28,7 @@ __VERBOSE=1
 # 1 Unknown encryption type
 # 2 Temp Mount Failure
 
+# Function for logging to the recovery log
 log_print()
 {
 	# 0 = Error; 1 = Information; 2 = Debugging
@@ -113,8 +124,8 @@ update_default_values()
 			$5 "$4"
 		else
 			log_print 0 "No Original $3 found. Setting default value..."
-			osver="16.1.0"
-			patchlevel="2099-12-31"
+			osver=$osver_twrp
+			patchlevel=$patchlevel_twrp
 			setprop "$4" "$1"
 			log_print 2 "$3 set. $4=$1"
 			log_print 2 "Updating $DEFAULTPROP with default $3..."
@@ -183,6 +194,9 @@ log_print 2 "SDK version: $sdkver"
 if [ "$sdkver" -lt 26 ]; then
 	DEFAULTPROP=default.prop
 	log_print 2 "Legacy device found! DEFAULTPROP variable set to $DEFAULTPROP."
+else
+	DEFAULTPROP=prop.default
+	log_print 2 "DEFAULTPROP variable set to $DEFAULTPROP."
 fi
 if [ "$sdkver" -lt 29 ]; then
 	venbin="/vendor/bin"
