@@ -68,6 +68,10 @@ PRODUCT_PACKAGES_ENG += \
 PRODUCT_SOONG_NAMESPACES += \
     $(LOCAL_PATH)
 
+# tzdata
+PRODUCT_PACKAGES_ENG += \
+    tzdata_twrp
+
 # ASUS otacert
 PRODUCT_EXTRA_RECOVERY_KEYS += \
     $(LOCAL_PATH)/security/asus
