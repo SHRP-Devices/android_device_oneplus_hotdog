@@ -46,9 +46,6 @@ on fs
     insmod /vendor/lib/modules/texfat.ko
     insmod /vendor/lib/modules/tntfs.ko
 
-on boot
-    start qti.vibrator-1-2
-
 # +++ ASUS_BSP : add for booting sound
 on property:sys.wipedata=1
     write /proc/asusevtlog WIPE-DATA
@@ -71,10 +68,3 @@ on property:init.svc.recovery=running
     write /proc/asusevtlog RECOVERY_MODE
 
 # --- ASUS_BSP : mount asdf partition
-
-service qti.vibrator-1-2 /system/bin/vendor.qti.hardware.vibrator@1.2-service
-    user root
-    group root
-    disabled
-    setenv LD_LIBRARY_PATH /vendor/lib64:/vendor/lib:/system/lib64:/system/lib:/sbin
-    seclabel u:r:recovery:s0
