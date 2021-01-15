@@ -4,7 +4,7 @@ $(call inherit-product, $(SRC_TARGET_DIR)/product/base.mk)
 LOCAL_PATH := device/asus/sm8250-common
 
 # define hardware platform
-PRODUCT_PLATFORM := kona
+PRODUCT_PLATFORM := msmnile
 
 #TEST
 # A/B support
@@ -17,8 +17,7 @@ AB_OTA_PARTITIONS += \
     boot \
     system \
     vendor \
-    vbmeta \
-    dtbo
+    vbmeta
 
 PRODUCT_PACKAGES += \
     otapreopt_script \
