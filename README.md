@@ -1,4 +1,6 @@
-# ASUS Snapdragon 865/865+ devices
-TWRP common device tree for ASUS sm8250 devices
-- ROG Phone 3
-- ZenFone 7/7 Pro
+# OnePlus Snapdragon 855+ devices
+TWRP common device tree for OnePlus sm8150 devices
+- OnePlus 7T
+- OnePlus 7T Pro
+
+Credits: Captain_Throwback for his trees.
