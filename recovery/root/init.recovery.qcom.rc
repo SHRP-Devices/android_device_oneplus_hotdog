@@ -27,12 +27,36 @@
 
 import /init.recovery.qcom_decrypt.rc
 
+service gatekeeper-1-0 /system/bin/android.hardware.gatekeeper@1.0-service-qti
+    user root
+    group root
+    disabled
+    seclabel u:r:recovery:s0
+
+service unified-script /system/bin/unified-script.sh
+    user root
+    group root
+    disabled
+    oneshot
+    seclabel u:r:recovery:s0
+
 on init
     write /sys/class/backlight/panel0-backlight/brightness 200
+
+    symlink /dev/block/bootdevice/by-name/oem_stanvbk /dev/block/bootdevice/by-name/oem_stanvbk_a
+    symlink /dev/block/bootdevice/by-name/oem_stanvbk /dev/block/bootdevice/by-name/oem_stanvbk_b
+    symlink /dev/block/bootdevice/by-name/oem_dycnvbk /dev/block/bootdevice/by-name/oem_dycnvbk_a
+    symlink /dev/block/bootdevice/by-name/oem_dycnvbk /dev/block/bootdevice/by-name/oem_dycnvbk_b
 
     # Create location for fs_mgr to store abbreviated output from filesystem
     # checker programs.
     mkdir /dev/fscklogs 0770 root system
+
+om boot
+    export LD_CONFIG_FILE /system/bin/ld.config.txt
+    setprop sys.usb.config adb
+    chmod 0777 /system/bin/unified-script.sh
+    start unified-script
 
 on fs
     wait /dev/block/platform/soc/${ro.boot.bootdevice}
@@ -45,3 +69,6 @@ on fs
     # Load Tuxera exFAT & NTFS modules
     insmod /vendor/lib/modules/texfat.ko
     insmod /vendor/lib/modules/tntfs.ko
+
+on property:prep.decrypt=1
+    start gatekeeper-1-0
