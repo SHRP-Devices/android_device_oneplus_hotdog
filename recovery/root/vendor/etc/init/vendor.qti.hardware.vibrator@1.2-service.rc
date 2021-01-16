@@ -1,4 +1,4 @@
-on boot && property:ro.product.device=I002D
+on boot
     start qti.vibrator-1-2
 
 service qti.vibrator-1-2 /system/bin/vendor.qti.hardware.vibrator@1.2-service
