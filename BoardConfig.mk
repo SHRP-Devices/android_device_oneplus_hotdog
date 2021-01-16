@@ -52,22 +52,13 @@ BOARD_KERNEL_CMDLINE := \
     androidboot.hardware=qcom \
     androidboot.memcg=1 \
     androidboot.usbcontroller=a600000.dwc3 \
-    cgroup.memory=nokmem,nosocket \
-    console=ttyMSM0,115200n8 \
-    earlycon=msm_geni_serial,0xa90000 \
     lpm_levels.sleep_disabled=1 \
     msm_rtb.filter=0x237 \
     firmware_class.path=/vendor/firmware_mnt/image \
-    reboot=panic_warm \
     service_locator.enable=1 \
     swiotlb=2048 \
     video=vfb:640x400,bpp=32,memsize=3072000
 #BOARD_KERNEL_CMDLINE += loop.max_part=7 # Removed to support Android 11 - NOTE: Max value is 255, but only 21 should currently be needed for TWRP
-
-
-# fstab
-TARGET_RECOVERY_FSTAB := $(DEVICE_PATH)/recovery.fstab
-
 
 BOARD_KERNEL_IMAGE_NAME := Image
 BOARD_KERNEL_PAGESIZE := 4096
@@ -100,6 +91,9 @@ TARGET_BOARD_PLATFORM := msmnile
 TARGET_BOARD_PLATFORM_GPU := qcom-adreno640
 TARGET_USES_HARDWARE_QCOM_BOOTCTRL := true
 QCOM_BOARD_PLATFORMS += msmnile
+
+# fstab
+TARGET_RECOVERY_FSTAB := $(DEVICE_PATH)/recovery.fstab
 
 # Partition Info
 BOARD_FLASH_BLOCK_SIZE := 262144
@@ -162,16 +156,6 @@ TARGET_RECOVERY_DEVICE_MODULES += \
 
 # Use mke2fs to create ext4 images
 TARGET_USES_MKE2FS := true
-
-# AVB
-#BOARD_AVB_ENABLE := true
-#BOARD_AVB_MAKE_VBMETA_IMAGE_ARGS += --set_hashtree_disabled_flag
-#BOARD_AVB_MAKE_VBMETA_IMAGE_ARGS += --flags 2
-#BOARD_AVB_VBMETA_SYSTEM := system
-#BOARD_AVB_VBMETA_SYSTEM_KEY_PATH := external/avb/test/data/testkey_rsa2048.pem
-#BOARD_AVB_VBMETA_SYSTEM_ALGORITHM := SHA256_RSA2048
-#BOARD_AVB_VBMETA_SYSTEM_ROLLBACK_INDEX := $(PLATFORM_SECURITY_PATCH_TIMESTAMP)
-#BOARD_AVB_VBMETA_SYSTEM_ROLLBACK_INDEX_LOCATION := 1
 
 # Encryption
 PLATFORM_VERSION := 16.1.0
