@@ -4,7 +4,7 @@ These are personal test builds of mine. In no way do I hold responsibility if it
 Proceed at your own risk.
 
 ## Setup repo tool
-Setup repo tool from here https://source.android.com/setup/build/downloading
+Setup repo tool from here https://source.android.com/setup/develop#installing-repo
 
 ## Compile
 
