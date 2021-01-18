@@ -41,4 +41,27 @@ To test it:
 ```
 fastboot boot out/target/product/hotdog/recovery.img
 ```
-Credit: Captain Throwback for original trees.
+
+#### Working
+- [X] Flashing ROMs (AOSP and OOS)
+- [X] ADB (+ sideload)
+- [X] all important partitions listed in mount/backup lists
+- [X] MTP export
+- [X] decrypt /data (Custom ROM decrypts ONLY)
+- [X] Backup to internal/microSD (Custom ROM only)
+- [X] Restore from internal/microSD (Custom ROM only)
+- [X] F2FS/EXT4 Support, exFAT/NTFS where supported
+- [X] backup/restore to/from external (USB-OTG) storage
+- [X] update.zip sideload
+- [X] backup/restore to/from adb (https://gerrit.omnirom.org/#/c/15943/)
+
+#### Not working - OxygenOS specific
+- [ ] decrypt /data (OxygenOS, hardware problem or something preventing mounting data)
+- [ ] Backup to internal/microSD
+- [ ] Restore from internal/microSD
+- [ ] partition SD card
+- [ ] MTP export (because OOS can't decrypt data)
+
+##### Credits:
+- CaptainThrowback for original trees.
+- mauronofrio for original trees.
