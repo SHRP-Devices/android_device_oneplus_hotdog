@@ -40,6 +40,8 @@ To test it:
 
 ```
 fastboot boot out/target/product/hotdog/recovery.img
+# Since 7T / Pro has a dedicated recovery paritions, you can flash the recovery with
+fastboot flash recovery recovery.name
 ```
 
 #### Working
@@ -60,7 +62,7 @@ fastboot boot out/target/product/hotdog/recovery.img
 - [ ] Backup to internal/microSD
 - [ ] Restore from internal/microSD
 - [ ] partition SD card
-- [X] format data (untested)
+- [ ] format data (untested)
 - [ ] MTP export (because OOS can't decrypt data)
 
 ##### Credits:
