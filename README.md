@@ -1,4 +1,4 @@
-# Device Tree for OnePlus 7T Pro aka Hotdog for TWRP
+# Device Tree for OnePlus 7T Pro aka Hotdog for TWRP (this should be unified with 7T, but I cannot test since I do not own that device)
 ## Disclaimer
 These are personal test builds of mine. In no way do I hold responsibility if it/you messes up your device.
 Proceed at your own risk.
@@ -8,13 +8,13 @@ Setup repo tool from here https://source.android.com/setup/develop#installing-re
 
 ## Compile
 
-First sync twrp-10.0 manifest:
+Sync twrp-10.0 manifest:
 
 ```
 repo init -u git://github.com/minimal-manifest-twrp/platform_manifest_twrp_omni.git -b twrp-10.0
 ```
 
-Now add this to .repo/manifests/twrp-extras.xml
+Add this to .repo/manifests/twrp-extras.xml
 
 ```xml
 <project name="systemad/android_device_oneplus_hotdog" path="device/oneplus/hotdog" remote="github" revision="android-10" />
@@ -32,16 +32,18 @@ To build, execute these commands in order
 . build/envsetup.sh
 export ALLOW_MISSING_DEPENDENCIES=true
 export LC_ALL=C
-lunch omni_hotdog-eng 
+lunch omni_hotdog-eng (sometimes you may have to cd into device/oneplus/hotdog and lunch there)
 mka adbd recoveryimage 
 ```
 
 To test it:
 
 ```
-fastboot boot out/target/product/hotdog/recovery.img
-# Since 7T / Pro has a dedicated recovery paritions, you can flash the recovery with
-fastboot flash recovery recovery.name
+# To temporarily boot it
+fastboot boot out/target/product/hotdog/recovery.img 
+
+# Since 7T / Pro has a dedicated recovery parition, you can flash the recovery with
+fastboot flash recovery recovery.img
 ```
 
 #### Working
@@ -49,7 +51,7 @@ fastboot flash recovery recovery.name
 - [X] ADB (+ sideload)
 - [X] all important partitions listed in mount/backup lists
 - [X] MTP export
-- [X] decrypt /data (Custom ROM decrypts ONLY)
+- [X] decrypt /data (Custom ROM only)
 - [X] Backup to internal/microSD (Custom ROM only)
 - [X] Restore from internal/microSD (Custom ROM only)
 - [X] F2FS/EXT4 Support, exFAT/NTFS where supported
@@ -65,7 +67,7 @@ fastboot flash recovery recovery.name
 - [ ] format data (untested)
 - [ ] MTP export (because OOS can't decrypt data)
 
-##### Credits:
+##### Credits
 - CaptainThrowback for original trees.
 - mauronofrio for original trees.
 - TWRP team and everyone involved for their amazing work.
