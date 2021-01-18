@@ -65,3 +65,4 @@ fastboot boot out/target/product/hotdog/recovery.img
 ##### Credits:
 - CaptainThrowback for original trees.
 - mauronofrio for original trees.
+- TWRP team and everyone involved for their amazing work.
