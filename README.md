@@ -60,6 +60,7 @@ fastboot boot out/target/product/hotdog/recovery.img
 - [ ] Backup to internal/microSD
 - [ ] Restore from internal/microSD
 - [ ] partition SD card
+- [X] format data (untested)
 - [ ] MTP export (because OOS can't decrypt data)
 
 ##### Credits:
