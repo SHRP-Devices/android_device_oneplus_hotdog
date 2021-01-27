@@ -47,7 +47,6 @@ on init
     mkdir /dev/fscklogs 0770 root system
 
 om boot
-    export LD_CONFIG_FILE /system/bin/ld.config.txt
     setprop sys.usb.config adb
     chmod 0777 /system/bin/unified-script.sh
     start unified-script
@@ -59,7 +58,3 @@ on fs
     # Set fscklog permission
     chown root system /dev/fscklogs/log
     chmod 0770 /dev/fscklogs/log
-
-    # Load Tuxera exFAT & NTFS modules
-    insmod /vendor/lib/modules/texfat.ko
-    insmod /vendor/lib/modules/tntfs.ko
