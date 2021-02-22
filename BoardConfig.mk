@@ -208,3 +208,69 @@ TARGET_USES_LOGD := true
 #TWRP_EVENT_LOGGING := true
 TWRP_INCLUDE_LOGCAT := true
 #TW_HAPTICS_TSPDRV := true
+
+############################################################################
+# SHRP flags
+############################################################################
+
+# Device codename
+# Default (if not set): N/A
+SHRP_DEVICE_CODE := hotdog
+
+# Path of your SHRP device tree
+# Replace <device-brand> with the device brand name
+# (SHRP_DEVICE_CODE will expand to the above variable so check if that is correct)
+SHRP_PATH := device/oneplus/$(SHRP_DEVICE_CODE)
+
+# Maintainer name
+# Default (if not set): N/A
+SHRP_MAINTAINER := steadfasterX
+
+# Recovery Type (for "About" section only)
+# Default (if not set): N/A
+SHRP_REC_TYPE := Treble
+
+# Device Type (for "About" section only)
+# Default (if not set): N/A
+SHRP_DEVICE_TYPE := A/B
+
+# Your device's recovery path, dont use blindly
+# No default
+SHRP_REC := /dev/block/bootdevice/by-name/recovery
+
+# Emergency DownLoad mode (0 = no EDL mode, 1 = EDL mode available)
+# Default (if not set): 0
+SHRP_EDL_MODE := 1
+
+# internal storage path
+# Default (if not set): /sdcard
+SHRP_INTERNAL := /sdcard
+
+# If your device has an external sdcard
+# Default (if not set): /
+SHRP_EXTERNAL := /external_sd
+
+# USB OTG path
+# Default (if not set): /
+SHRP_OTG := /usb_otg
+
+# Flashlight: (0 = disable, 1 = enable)
+# Default (if not set): 0
+SHRP_FLASH := 1
+
+# Use this flag only if your device is A/B.
+# Default (if not set) is no A/B device
+# Set this variable when true ONLY (do not use "false" or similiar)
+SHRP_AB := true
+
+# SHRP Express, enables on-the-fly theme patching (also persistent) + persistent lock
+# Default (if not set) is not using Express
+# Set this variable when true ONLY (do not use "false" or similiar)
+SHRP_EXPRESS := true
+
+# SHRP Dark mode, use this flag to have dark theme set by default
+# Default (if not set) is not using DARK mode
+# Set this variable when true ONLY (do not use "false" or similiar)
+SHRP_DARK := true
+
+
