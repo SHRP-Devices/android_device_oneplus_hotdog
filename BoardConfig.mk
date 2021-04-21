@@ -225,6 +225,9 @@ SHRP_PATH := device/oneplus/$(SHRP_DEVICE_CODE)
 # Default (if not set): N/A
 SHRP_MAINTAINER := steadfasterX
 
+# SHRP state
+SHRP_OFFICIAL := true
+
 # Recovery Type (for "About" section only)
 # Default (if not set): N/A
 SHRP_REC_TYPE := Treble
